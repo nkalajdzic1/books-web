@@ -4,9 +4,10 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { LoadingPage, Page404 } from "lib/components";
 import { ROUTE_PATHS } from "lib/constants";
 
-// Devices won't be lazy loaded, it is the landing page - the most visited page
-import { HomePage } from "features/Books/HomePage";
 // lazy load routes
+const HomePage = lazy(() => import("features/Books/HomePage"));
+const LoginPage = lazy(() => import("features/Auth/LoginPage"));
+const RegisterPage = lazy(() => import("features/Auth/RegisterPage"));
 const MyBooksPage = lazy(() => import("features/Books/MyBooksPage"));
 
 const ROUTES = {
@@ -14,6 +15,16 @@ const ROUTES = {
     path: ROUTE_PATHS.HOME,
     exact: true,
     element: <HomePage />,
+  },
+  LOGIN: {
+    path: ROUTE_PATHS.LOGIN,
+    exact: true,
+    element: <LoginPage />,
+  },
+  REGISTER: {
+    path: ROUTE_PATHS.REGISTER,
+    exact: true,
+    element: <RegisterPage />,
   },
   MY_BOOKS: {
     path: ROUTE_PATHS.MY_BOOKS,

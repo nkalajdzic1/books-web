@@ -32,6 +32,12 @@ export const commonThemeStyling: ICommonThemeStyling = {};
 
 // #region Application theme
 
+export interface IComonButtonStyle {
+  color: string;
+  background: string;
+  outline: string;
+}
+
 export interface ICommonTypographyStyle {
   "font-size": string;
   "font-weight": number;
@@ -48,11 +54,8 @@ export interface IStyledTheme extends ICommonThemeStyling, IThemeColors {
   color: string;
   fontFamily: string;
   buttons: {
-    primary: {
-      color: string;
-      background: string;
-      border: string;
-    };
+    primary: IComonButtonStyle;
+    outline: IComonButtonStyle;
   };
   typography: {
     h1: IHeadingStyle;
@@ -72,9 +75,14 @@ export const theme: IStyledTheme = {
   fontFamily: "Sora",
   buttons: {
     primary: {
+      color: colors.white,
+      background: colors.black,
+      outline: `1.5px solid ${colors.black}`,
+    },
+    outline: {
       color: colors.black,
       background: colors.white,
-      border: `3px solid ${colors.black}`,
+      outline: `1.5px solid ${colors.black}`,
     },
   },
   typography: {

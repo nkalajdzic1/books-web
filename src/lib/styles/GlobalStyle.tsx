@@ -21,9 +21,7 @@ export const GlobalStyle = createGlobalStyle<{ theme: IStyledTheme }>`
     color: ${(props) => props.theme.color};
     font-family: ${(props) => props.theme.fontFamily}, sans-serif;
   }
-  html, body, #root {
-    height: 100%;
-  }
+  
   body {
     margin: 0;
     padding: 0;

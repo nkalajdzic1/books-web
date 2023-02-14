@@ -3,3 +3,4 @@ export * from "./Page404";
 export * from "./Page";
 export * from "./Button";
 export * from "./If";
+export * from "./Input";

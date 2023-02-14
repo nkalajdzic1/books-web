@@ -26,7 +26,8 @@ const StyledButton = styled.button<IStyledButton>`
 `;
 
 export interface IButton {
-  variant: string;
+  variant?: string;
+  style?: Object;
 }
 
 export const Button: FunctionComponent<PropsWithChildren & IButton> = ({
