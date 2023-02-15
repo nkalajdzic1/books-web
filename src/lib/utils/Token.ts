@@ -30,6 +30,12 @@ export class Token {
     return jwt(Token.getToken());
   }
 
+  public static decodeToken(val: string): ITokenContent | null {
+    if (!val) return null;
+
+    return jwt(val);
+  }
+
   public static isTokenValid(): boolean {
     const decodedToken: ITokenContent | null = Token.getDecodedToken();
 

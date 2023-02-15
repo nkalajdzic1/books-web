@@ -2,20 +2,21 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Page } from "lib/components";
-import { Token } from "lib/utils";
 import { ROUTE_PATHS } from "lib/constants";
+import { useAuthContext } from "lib/contexts";
 
 export const LogoutPage = () => {
+  const { isLoggedIn, removeToken } = useAuthContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!Token.isTokenValid()) {
+    if (!isLoggedIn) {
       navigate(ROUTE_PATHS.LOGIN);
       return;
     }
 
-    Token.removeToken();
-  }, [navigate]);
+    removeToken();
+  }, [isLoggedIn, removeToken, navigate]);
 
   return <Page>Logging out...</Page>;
 };

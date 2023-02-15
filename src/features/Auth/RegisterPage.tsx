@@ -8,9 +8,9 @@ import { object, string } from "yup";
 import { Button, FormField, Link, Page } from "lib/components";
 import { H3, Label } from "lib/components/typography";
 import { ROUTE_PATHS } from "lib/constants";
+import { useAuthContext } from "lib/contexts";
 
 import { useRegister } from "./useRegister";
-import { Token } from "lib/utils";
 
 const FormWrapper = styled.form`
   display: flex;
@@ -67,9 +67,11 @@ const LOGIN_SCHEMA = object().shape({
 });
 
 const RegisterPage: FunctionComponent = () => {
+  const { isLoggedIn } = useAuthContext();
+
   const navigate = useNavigate();
 
-  const { registerAsync } = useRegister();
+  const { registerAsync, isLoading } = useRegister();
 
   const formValues = useForm<UserRegisterData>({
     defaultValues,
@@ -79,7 +81,7 @@ const RegisterPage: FunctionComponent = () => {
   });
 
   const onSave: SubmitHandler<UserRegisterData> = async (
-    values
+    values: UserRegisterData
   ): Promise<any> => {
     await registerAsync({
       email: values.email,
@@ -88,10 +90,10 @@ const RegisterPage: FunctionComponent = () => {
   };
 
   useEffect(() => {
-    if (!Token.isTokenValid()) return;
+    if (!isLoggedIn) return;
 
     navigate(ROUTE_PATHS.HOME);
-  }, [navigate]);
+  }, [isLoggedIn, navigate]);
 
   return (
     <Page>
@@ -104,7 +106,7 @@ const RegisterPage: FunctionComponent = () => {
           <FormField name="password" type="password" />
           <Label>Confirm password</Label>
           <FormField name="confirmPassword" type="password" />
-          <Button type="submit">SUBMIT</Button>
+          <Button type="submit">{isLoading ? "LOADING..." : "SUBMIT"}</Button>
           <LinkWrapper>
             Already have an account? Click{" "}
             <Link to={ROUTE_PATHS.LOGIN}>here</Link> to login.

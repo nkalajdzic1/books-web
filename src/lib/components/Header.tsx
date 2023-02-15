@@ -3,9 +3,9 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 import { ROUTE_PATHS } from "lib/constants";
+import { useAuthContext } from "lib/contexts";
 
 import { Menu } from "./Menu";
-import { Token } from "lib/utils";
 
 const HeaderWrapper = styled.div`
   display: grid;
@@ -23,7 +23,18 @@ const StyledLink = styled(NavLink)`
   color: ${({ theme }) => theme.color};
 `;
 
-let links = [
+const linksForLoggedInUsers = [
+  {
+    name: "HOME",
+    href: ROUTE_PATHS.HOME,
+  },
+  {
+    name: "LOGOUT",
+    href: ROUTE_PATHS.LOGOUT,
+  },
+];
+
+const linksForGuestUsers = [
   {
     name: "HOME",
     href: ROUTE_PATHS.HOME,
@@ -39,25 +50,17 @@ let links = [
 ];
 
 export const Header: FunctionComponent = () => {
-  if (Token.isTokenValid()) {
-    links = [
-      {
-        name: "HOME",
-        href: ROUTE_PATHS.HOME,
-      },
-      {
-        name: "LOGOUT",
-        href: ROUTE_PATHS.LOGOUT,
-      },
-    ];
-  }
+  const { isLoggedIn } = useAuthContext();
 
   return (
     <HeaderWrapper>
       <StyledLink to={ROUTE_PATHS.HOME}>
         <Logo>My Books To Read</Logo>
       </StyledLink>
-      <Menu side="right" links={links} />
+      <Menu
+        side="right"
+        links={isLoggedIn ? linksForLoggedInUsers : linksForGuestUsers}
+      />
     </HeaderWrapper>
   );
 };

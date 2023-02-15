@@ -3,8 +3,9 @@ import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { API, Token } from "lib/utils";
+import { API } from "lib/utils";
 import { ROUTE_PATHS } from "lib/constants";
+import { useAuthContext } from "lib/contexts";
 
 /**
  * @description custom hook used for the login request
@@ -12,10 +13,12 @@ import { ROUTE_PATHS } from "lib/constants";
  */
 export const useLogin = () => {
   const navigate = useNavigate();
+  const { setToken } = useAuthContext();
 
   const {
     data,
     isSuccess,
+    isLoading,
     mutateAsync: loginAsync,
   } = useMutation(async (body: { email: string; password: string }) => {
     const apiClient = new API().getInstance();
@@ -26,13 +29,13 @@ export const useLogin = () => {
   useEffect(() => {
     if (!isSuccess || !data) return;
 
-    Token.setToken(data.token.toString());
+    setToken(data.token.toString());
     navigate(ROUTE_PATHS.HOME);
 
     toast("Successfully logged in!", {
       type: "success",
     });
-  }, [isSuccess, data, navigate]);
+  }, [isSuccess, data, setToken, navigate]);
 
-  return { data, isSuccess, loginAsync };
+  return { data, isSuccess, isLoading, loginAsync };
 };
