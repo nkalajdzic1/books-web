@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { SortOrder } from "lib/enums";
 
@@ -7,6 +7,7 @@ export interface IQueryFilter {
   pageNumber?: number;
   order?: SortOrder;
   orderBy?: string;
+  search?: string;
 }
 
 /**
@@ -16,29 +17,41 @@ export interface IQueryFilter {
  * @returns state that is preserving the filters
  */
 export const useQueryParams = (
-  initialFilter: IQueryFilter,
-  resetData: () => void
-): Array<Object> => {
+  initialFilter?: IQueryFilter,
+  resetData?: () => void
+): Array<any> => {
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(
-    initialFilter.pageSize || 10
+    initialFilter?.pageSize || 10
   );
 
   const [order, setOrder] = useState<SortOrder>(
-    initialFilter.order || SortOrder.ASC
+    initialFilter?.order || SortOrder.ASC
   );
-  const [orderBy, setOrderBy] = useState<string>(initialFilter.orderBy || "");
+  const [orderBy, setOrderBy] = useState<string>(initialFilter?.orderBy || "");
 
-  const onOrderChange = (
-    newOrderBy: SortOrder,
-    newOrder = SortOrder.ASC
-  ): void => {
-    if (resetData) resetData();
+  const [search, setSearch] = useState<string>(initialFilter?.search || "");
 
-    setPageNumber(1);
-    setOrderBy(newOrderBy);
-    setOrder(newOrder);
-  };
+  const onOrderChange = useCallback(
+    (newOrderBy: SortOrder, newOrder = SortOrder.ASC): void => {
+      if (resetData) resetData();
+
+      setPageNumber(1);
+      setOrderBy(newOrderBy);
+      setOrder(newOrder);
+    },
+    [resetData]
+  );
+
+  const onSearch = useCallback(
+    (val: string) => {
+      if (resetData) resetData();
+
+      setSearch(val);
+      setPageNumber(1);
+    },
+    [resetData]
+  );
 
   return [
     {
@@ -48,5 +61,6 @@ export const useQueryParams = (
       setPageSize,
     },
     { order, orderBy, onOrderChange },
+    { search, onSearch },
   ];
 };
