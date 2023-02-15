@@ -8,6 +8,8 @@ export interface IThemeColors {
   paperGray: string;
   hoverGray: string;
   black: string;
+  skyBlue: string;
+  red: string;
 }
 
 export const colors: IThemeColors = {
@@ -18,6 +20,8 @@ export const colors: IThemeColors = {
   paperGray: "#F6F7FA",
   hoverGray: "#D6D6D6",
   black: "#000000",
+  skyBlue: "#81D6FF",
+  red: "#FF3737",
 };
 
 // #endregion

@@ -1,4 +1,14 @@
+import { FunctionComponent, InputHTMLAttributes } from "react";
+import { RefCallBack } from "react-hook-form/dist/types";
 import styled from "styled-components";
+
+import { Label } from "./typography";
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
 
 const Component = styled.input`
   padding: 10px;
@@ -8,6 +18,21 @@ const Component = styled.input`
   height: 50px;
 `;
 
-export const Input = (props: any) => {
-  return <Component {...props} />;
+const ErrorWrapper = styled(Label)`
+  color: ${({ theme }) => theme.red};
+  height: 20px;
+`;
+
+export interface IInput extends InputHTMLAttributes<HTMLInputElement> {
+  errors?: Object;
+  componentRef?: RefCallBack;
+}
+
+export const Input: FunctionComponent<IInput> = ({ errors = {}, ...rest }) => {
+  return (
+    <Wrapper>
+      <Component {...rest} />
+      <ErrorWrapper>{Object.values(errors)?.[0]}</ErrorWrapper>
+    </Wrapper>
+  );
 };

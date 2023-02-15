@@ -1,3 +1,5 @@
+// all unrelated functions and utils are held here
+
 /**
  * @description method to convert an object to a http request query, (e.g. pageNumber=1&pageSize=2&...)
  * @param {Object} obj Object containing the keys and values that need to be mapped

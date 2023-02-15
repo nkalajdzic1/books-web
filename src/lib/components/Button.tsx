@@ -1,4 +1,8 @@
-import { FunctionComponent, PropsWithChildren } from "react";
+import {
+  ButtonHTMLAttributes,
+  FunctionComponent,
+  PropsWithChildren,
+} from "react";
 import styled from "styled-components";
 
 import { mapStyles } from "lib/utils";
@@ -23,11 +27,14 @@ const StyledButton = styled.button<IStyledButton>`
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  &:focus {
+    outline: 3.5px solid ${({ theme }) => theme.skyBlue};
+  }
 `;
 
-export interface IButton {
+export interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: string;
-  style?: Object;
 }
 
 export const Button: FunctionComponent<PropsWithChildren & IButton> = ({

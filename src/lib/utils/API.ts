@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { Token } from "./Token";
+
 // API class used for api endpoint calls
 export class API {
   // private api instance
@@ -11,13 +13,11 @@ export class API {
       baseURL: url,
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${Token.getToken()}`,
       },
     });
   }
 
   // get instance
   getInstance = () => this.instance;
-
-  // set instance and return it immediately to enable chaining commands
-  setInstance = (instance: any) => (this.instance = instance);
 }
