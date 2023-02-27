@@ -16,6 +16,7 @@ export const GlobalStyle = createGlobalStyle<{ theme: IStyledTheme }>`
   *, *::before, *::after {
     box-sizing: border-box;
   }
+  
   html {
     background-color: ${(props) => props.theme.background};
     color: ${(props) => props.theme.color};

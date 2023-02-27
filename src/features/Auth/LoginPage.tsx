@@ -61,7 +61,7 @@ export const LoginPage: FunctionComponent = () => {
 
   const navigate = useNavigate();
 
-  const { loginAsync, isLoading } = useLogin();
+  const { login, isLoading } = useLogin();
 
   const formValues = useForm<UserLoginData>({
     defaultValues,
@@ -73,7 +73,7 @@ export const LoginPage: FunctionComponent = () => {
   const onSave: SubmitHandler<UserLoginData> = async (
     values: UserLoginData
   ): Promise<any> => {
-    await loginAsync({
+    login({
       email: values.email,
       password: values.password,
     });
