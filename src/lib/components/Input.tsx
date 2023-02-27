@@ -15,7 +15,7 @@ const Component = styled.input`
   background-color: transparent;
   color: black;
   outline: 1px solid black;
-  height: 50px;
+  height: 40px;
 `;
 
 const ErrorWrapper = styled(Label)`
@@ -28,9 +28,13 @@ export interface IInput extends InputHTMLAttributes<HTMLInputElement> {
   componentRef?: RefCallBack;
 }
 
-export const Input: FunctionComponent<IInput> = ({ errors = {}, ...rest }) => {
+export const Input: FunctionComponent<IInput> = ({
+  errors = {},
+  className,
+  ...rest
+}) => {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       <Component {...rest} />
       <ErrorWrapper>{Object.values(errors)?.[0]}</ErrorWrapper>
     </Wrapper>

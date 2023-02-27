@@ -13,7 +13,7 @@ interface IStyledButton {
 
 const StyledButton = styled.button<IStyledButton>`
   ${({ theme, variant }) => mapStyles(theme.buttons[variant])};
-  height: 53px;
+  height: 40px;
   padding: 8px 16px;
   font-family: ${({ theme }) => theme.fontFamily};
   font-weight: bold;
