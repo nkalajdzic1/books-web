@@ -1,9 +1,12 @@
-import { PropsWithChildren } from "react";
+import { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 
-type IIf = { predicate: boolean } & Pick<PropsWithChildren, "children">;
+type IIf = { predicate: boolean };
 
-export const If = ({ predicate, children }: IIf) => {
+export const If: FunctionComponent<PropsWithChildren<IIf>> = ({
+  predicate,
+  children,
+}): ReactElement | null => {
   if (!predicate) return null;
 
-  return children;
+  return <>{children}</>;
 };

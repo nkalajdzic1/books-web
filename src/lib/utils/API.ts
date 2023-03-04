@@ -21,3 +21,22 @@ export class API {
   // get instance
   getInstance = () => this.instance;
 }
+
+// the library api should be without the auth and other headers
+export class LibraryAPI {
+  // private api instance
+  private instance;
+
+  // get the url from the constructor and create an api instance
+  constructor(url = process.env.REACT_APP_API_URL) {
+    this.instance = axios.create({
+      baseURL: url,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  // get instance
+  getInstance = () => this.instance;
+}

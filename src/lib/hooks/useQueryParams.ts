@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 
 import { SortOrder } from "lib/enums";
+import { useImmer } from "use-immer";
 
 export interface IQueryFilter {
   pageSize?: number;
@@ -8,6 +9,10 @@ export interface IQueryFilter {
   order?: SortOrder;
   orderBy?: string;
   search?: string;
+}
+
+export interface ISearchObject {
+  keyword: string;
 }
 
 /**
@@ -30,7 +35,9 @@ export const useQueryParams = (
   );
   const [orderBy, setOrderBy] = useState<string>(initialFilter?.orderBy || "");
 
-  const [search, setSearch] = useState<string>(initialFilter?.search || "");
+  const [search, setSearch] = useImmer<ISearchObject>({
+    keyword: initialFilter?.search || "",
+  });
 
   const onOrderChange = useCallback(
     (newOrderBy: SortOrder, newOrder = SortOrder.ASC): void => {
@@ -44,13 +51,18 @@ export const useQueryParams = (
   );
 
   const onSearch = useCallback(
-    (val: string) => {
+    (params: any) => {
       if (resetData) resetData();
 
-      setSearch(val);
+      setSearch((draft: any) => {
+        for (let p in params) {
+          draft[p] = params[p];
+        }
+      });
+
       setPageNumber(1);
     },
-    [resetData]
+    [resetData, setSearch]
   );
 
   return [
@@ -61,6 +73,6 @@ export const useQueryParams = (
       setPageSize,
     },
     { order, orderBy, onOrderChange },
-    { search, onSearch },
+    { search: search, onSearch },
   ];
 };

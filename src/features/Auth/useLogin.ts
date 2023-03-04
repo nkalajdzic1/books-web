@@ -1,11 +1,10 @@
-import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { API } from "lib/utils";
-import { ROUTE_PATHS } from "lib/constants";
+import { MUTATION_KEYS, ROUTE_PATHS } from "lib/constants";
 import { useAuthContext } from "lib/contexts";
-import { ApiErrorHandler } from "lib/classes";
+import { useCustomMutation } from "lib/hooks";
 
 /**
  * @description custom hook used for the login request
@@ -20,14 +19,14 @@ export const useLogin = () => {
     isSuccess,
     isLoading,
     mutate: login,
-  } = useMutation(
+  } = useCustomMutation(
+    MUTATION_KEYS.LOGIN,
     async (body: { email: string; password: string }) => {
       const apiClient = new API().getInstance();
       const response = await apiClient.post("/auth/login", body);
       return response.data;
     },
     {
-      onError: ApiErrorHandler.handleApiError,
       onSuccess: (res) => {
         setToken(res.token.toString());
         navigate(ROUTE_PATHS.HOME);

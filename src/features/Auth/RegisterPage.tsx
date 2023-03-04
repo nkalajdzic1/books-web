@@ -71,7 +71,7 @@ const RegisterPage: FunctionComponent = () => {
 
   const navigate = useNavigate();
 
-  const { registerAsync, isLoading } = useRegister();
+  const { register, isLoading } = useRegister();
 
   const formValues = useForm<UserRegisterData>({
     defaultValues,
@@ -83,7 +83,7 @@ const RegisterPage: FunctionComponent = () => {
   const onSave: SubmitHandler<UserRegisterData> = async (
     values: UserRegisterData
   ): Promise<any> => {
-    await registerAsync({
+    register({
       email: values.email,
       password: values.password,
     });

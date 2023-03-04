@@ -1,7 +1,6 @@
-import { useQuery } from "react-query";
-
 import { QUERY_KEYS } from "lib/constants";
-import { getQueryParams, API } from "lib/utils";
+import { getQueryParams, LibraryAPI } from "lib/utils";
+import { useCustomQuery } from "lib/hooks";
 
 /**
  * @description hook that retrieves the list of books from the api for the given search
@@ -10,22 +9,34 @@ import { getQueryParams, API } from "lib/utils";
  * @returns result of the useQuery hook after calling the api
  */
 export const useSearchBooks = (params: Object, config?: Object) => {
-  return useQuery(
+  return useCustomQuery(
     [QUERY_KEYS.SEARCH_BOOKS, params],
     async () => {
-      const apiClient = new API(
+      const apiClient = new LibraryAPI(
         process.env.REACT_APP_LIBRARY_API_URL
       ).getInstance();
+
       const response = await apiClient.get(
         `/search.json?${getQueryParams(params)}`
       );
+
       return {
-        list: response.data || [],
+        list: response.data.docs || [],
         total: response.data.numFound || 0,
       };
     },
     {
       enabled: true,
+      select: (res: any) => {
+        return {
+          ...res,
+          list: res?.list.map((x: any) => ({
+            title: x.title,
+            authors: x.author_name || [],
+            lccns: x.lccn || [],
+          })),
+        };
+      },
       ...config,
     }
   );
